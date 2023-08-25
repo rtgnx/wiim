@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WiiM - Display</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+      <!-- Include jQuery -->
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <style>
+          /* Dark background */
+          body {
+              background-color: #121212;
+              color: #ffffff;
+          }
+      </style>
+  </head>
+  <body class="flex justify-center items-center h-screen">
+  
+  <div class="text-center">
+      <!-- Music Artwork -->
+      <img id="artwork" src="music_artwork.jpg" alt="Music Artwork" class="mx-auto w-80 h-80 shadow-lg">
+  
+      <!-- Artist and Title -->
+      <h2 class="text-xl font-semibold mt-4">Artist Name</h2>
+      <p class="text-gray-600 text-sm">Song Title</p>
+  
+  
+  </div>
+  
+  <!-- WebSocket Connection -->
+  <script>
+      $(document).ready(function () {
+          // Replace with your WebSocket server URL
+          const socket = new WebSocket('ws://127.0.0.1:9090/ws');
+  
+          socket.onmessage = function (event) {
+              // Parse the received JSON data
+              const data = JSON.parse(event.data);
+              console.log(data)
+              // Update data fields with received data
+              $('.text-xl').text(data['artist']);
+              $('.text-sm').text(data['title']);
+
+              $("#artwork").attr('src', data["artwork"]);
+              // Update progress bar, audio quality, sample rate, and bit depth if needed
+              // Modify the selectors and data extraction as per your JSON structure
+              // $('#audio-quality-badge').text(data['quality']);
+              // $('#sample-rate-badge').text(data['sample_rate'] + ' Hz');
+              // $('#bitdepth').text(data['bit_depth'] + '-bit');
+          };
+      });
+  </script>
+  
+  </body>
+  </html>
